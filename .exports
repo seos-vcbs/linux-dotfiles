@@ -1,0 +1,21 @@
+if [ "$(uname)" = "Darwin" ]; then
+    export JAVA_HOME=$(/usr/libexec/java_home -v 11.0)
+fi
+
+export MAVEN_HOME=~/opt/maven/cv
+export GRADLE_HOME=~/opt/gradle/cv
+export SBT_HOME=~/opt/sbt/cv
+#
+# this throws error on ec2 server
+export GPG_TTY=$(tty)
+
+export BUILDKIT_PROGRESS=plain
+#
+# let the iTerm show the current directory name
+export PROMPT_COMMAND="echo -n '\033]0;${PWD##*/}\007'"
+#
+# fzf find ctrl o triggers vim to open the file
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(vim {})+abort'"
+export KUBECONFIG=~/.kube/config
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export EDITOR=nvim

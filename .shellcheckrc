@@ -1,0 +1,2 @@
+# disable Double quote to prevent globbing and word splitting 
+disable=2086

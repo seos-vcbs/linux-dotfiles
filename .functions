@@ -1,0 +1,77 @@
+#!/usr/bin/env zsh
+
+function movtogif () {
+    tempfile=.mov-to-gif-$(date +"%s").png
+    ffmpeg -v quiet -stats -y -i $1 -vf fps=10,palettegen $tempfile
+    ffmpeg -v quiet -stats -i $1 -i $tempfile -filter_complex "fps=10,paletteuse" "${1%.mov}.gif"
+    rm $tempfile
+}
+
+function use() {
+    export AWS_PROFILE=${1}
+}
+
+# this function results in messing up the auto complete, therefore using alias instead
+# function _ssh() {
+#   ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "$@"
+# }
+alias ssh='f(){ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $@}; f'
+# alias ssh='_ssh $@'
+
+function stage() {
+    export STAGE=${1}; terraform workspace select "${1}"
+}
+
+function kssh() {
+    kubectl exec --stdin --tty "${1}" -- /bin/bash
+}
+
+function logs() {
+    kubectl logs "${1}" --follow
+}
+
+function busybox() {
+    kubectl -n "${1:-default}" run -it --rm --restart=Never busybox --image=gcr.io/google-containers/busybox sh
+}
+
+function arp_flush() {
+    sudo arp -a -d
+}
+
+function delete_merged_local_branches() {
+    git branch --merged >/tmp/merged-branches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches
+}
+
+function delete_s3_bucket() {
+    aws s3 rm --quiet --recursive "s3://"$1
+    aws s3 rb "s3://"$1
+}
+
+function port_in_use() {
+    sudo lsof -iTCP -sTCP:LISTEN -n -P
+}
+
+function consul_local() {
+    /usr/local/bin/consul agent -dev
+}
+
+# CREDIT: https://superuser.com/questions/1680644/how-do-you-see-the-os-dns-cache-on-linux
+function show_dns_cache() {
+    time=$(date +%s) # unix time format
+    sudo systemctl kill -s USR1 systemd-resolved
+    sudo journalctl -b -u systemd-resolved -S "@$time" -o cat | grep " IN "
+}
+
+function aw_pem_finger_print() {
+    openssl pkcs8 -in $1 -inform PEM -outform DER -topk8 -nocrypt | openssl sha1 -c
+}
+
+# symetrical encryption using openssl
+function encrypt() {
+    echo $1 | openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -a -k pass
+}
+
+function ecr_login() {
+    aws ecr get-login-password | docker login --username AWS \
+        --password-stdin ${1}.dkr.ecr.us-east-1.amazonaws.com
+}
