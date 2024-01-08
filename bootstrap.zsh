@@ -9,6 +9,7 @@ function doIt() {
         --exclude "bootstrap.zsh" \
         --exclude "CREDIT.md" \
         --exclude "NEOVIM.md" \
+        --exclude "LICENSE" \
         -avh --no-perms . ~;
 	source ~/.zshrc;
 }
