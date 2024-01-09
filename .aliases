@@ -78,7 +78,7 @@ alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
 alias map="xargs -n1"
 
 # Trim new lines and copy to clipboard
-alias c="tr -d '\n' | pbcopy"
+alias c="tmux show-buffer | xclip -selection clipboard"
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec ${SHELL} -l"
