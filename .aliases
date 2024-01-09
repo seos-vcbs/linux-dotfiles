@@ -18,7 +18,7 @@ alias pi='pe && poetry lock --no-update && poetry install --sync'
 alias pb='pe && poetry build-project --with-top-namespace ${PWD##*/}'
 alias pt='poetry run pytest'
 alias pu='mkdir tmp && unzip -q ./dist/*.whl -d tmp/ && cp ./.python-version tmp/ && cp ./pyproject.toml tmp/ && cp ./poetry.lock tmp/'
-alias pz='poetry shell'
+alias pz='source $(poetry env info --path)/bin/activate'
 alias pv="pc && pi && pb && pu && cd tmp && sed -i${SEP}'' -E 's/\s*[{].*[}],?//' pyproject.toml && pi && pz"
 
 # tmux
