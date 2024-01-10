@@ -25,6 +25,8 @@ alias pv="pc && pi && pb && pu && cd tmp && sed -i${SEP}'' -E 's/\s*[{].*[}],?//
 alias tl="tmux list-sessions -F '#{session_name}' | gum filter --prompt 'select your existing ssh session > '"
 alias tt='tmux attach -t $(tl)'
 alias ts='tmux choose-tree -sN'
+alias tlc='tmux list-clients | gum filter | awk -F: '"'"'{ print $1 }'"'"''
+alias tdc='tmux detach-client -t $(tlc)'
 
 alias rg='rg --hidden --no-ignore'
 
