@@ -22,8 +22,8 @@ function stage() {
     export STAGE=${1}; terraform workspace select "${1}"
 }
 
-function kssh() {
-    kubectl exec --stdin --tty "${1}" -- /bin/bash
+function kexec() {
+    kubectl -n "${1}" exec --stdin --tty "${2}" -- /bin/zsh
 }
 
 function logs() {
