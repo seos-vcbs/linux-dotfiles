@@ -63,6 +63,9 @@ alias la="ls -lAF ${colorflag}"
 # List only directories
 alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
 
+# List hidden directory size
+lias lshd='\ls -ld .*/ | awk '"'"'{ print $9 }'"'"' | xargs -n1 du -hs'
+
 # Always use color output for `ls`
 alias ls="command ls ${colorflag}"
 
