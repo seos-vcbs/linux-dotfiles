@@ -75,3 +75,11 @@ function ecr_login() {
     aws ecr get-login-password | docker login --username AWS \
         --password-stdin ${1}.dkr.ecr.us-east-1.amazonaws.com
 }
+
+function ms() {
+    set -x
+    mlflow server \
+        --backend-store-uri sqlite:///${HOME}/mlflow/mydb.sqlite \
+        --default-artifact-root file://${HOME}/mlflow/artifacts
+    set +x
+}
