@@ -26,6 +26,10 @@ function kexec() {
     kubectl -n "${1}" exec --stdin --tty "${2}" -- /bin/zsh
 }
 
+function pf() {
+    kubectl -n "${1}" port-forward pod/"${2}" 2222:22
+}
+
 function logs() {
     kubectl logs "${1}" --follow
 }
