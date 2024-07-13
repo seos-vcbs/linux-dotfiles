@@ -29,4 +29,5 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # an attempt to set cap to function like esc. using tweaks might be better
-setxkbmap -option caps:escape
+# this causes Cannot open display "default display" when new session is created
+# setxkbmap -option caps:escape
