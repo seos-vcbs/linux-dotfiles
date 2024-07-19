@@ -87,3 +87,7 @@ function ms() {
         --default-artifact-root file://${HOME}/mlflow/artifacts
     set +x
 }
+
+function poetry_shell () {
+    emulate zsh -c '. /home/seos/src/github.com/ns-dsnp/content-ml/modules/sparse_sentence_embedding/.venv/bin/activate'
+}
