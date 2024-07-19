@@ -1,0 +1,88 @@
+#!/bin/zsh
+
+# Define the main function
+dwk() {
+    if [[ $# -eq 0 ]]; then
+        display_help
+        return 1
+    fi
+
+    local subcommand="$1"
+    shift 1
+
+    case "$subcommand" in
+        dbs)
+            dbs "$@"
+            ;;
+        sum)
+            sum "$@"
+            ;;
+        info)
+            info "$@"
+            ;;
+        help)
+            display_help
+            ;;
+        *)
+            echo "Unknown subcommand: $subcommand"
+            display_help
+            return 1
+            ;;
+    esac
+}
+
+# Subcommand: dbs
+dbs() {
+    # it's not a good practice to check in secrets to private repo on the web
+    # therefore, relying on local .extra file as dependency
+    source ~/.extra
+
+    local name="$1"
+    if [[ $name = "remote" ]]; then
+        export MLFLOW_TRACKING_URI=databricks
+        echo "export DATABRICKS_HOST=${DATABRICKS_HOST}"
+        echo "export DATABRICKS_TOKEN=${DATABRICKS_TOKEN}"
+        echo "export MLFLOW_TRACKING_URI=databricks"
+    fi
+
+    if [[ $name = "local" ]]; then
+        unset DATABRICKS_HOST
+        unset DATABRICKS_TOKEN
+        export MLFLOW_TRACKING_URI=http://localhost:5000
+        echo "unset DATABRICKS_HOST"
+        echo "unset DATABRICKS_TOKEN"
+        echo "export MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI}"
+    fi
+}
+
+# Subcommand: sum
+sum() {
+    local total=0
+    for num in "$@"; do
+        (( total += num ))
+    done
+    echo "Sum: $total"
+}
+
+# Subcommand: info
+info() {
+    echo "Current shell: $SHELL"
+    echo "Home directory: $HOME"
+    echo "Current directory: $(pwd)"
+}
+
+# Help function
+display_help() {
+    echo "Usage: dwk <subcommand> [args]"
+    echo
+    echo "Subcommands:"
+    echo "  dbs <subcommand>        Databricks automation"
+    echo "  sum <num1> <num2> ...   Calculate the sum of the specified numbers"
+    echo "  info                    Display information about the current environment"
+    echo "  help                    Display this help message"
+}
+
+# Enable the function to be run as a script
+if [[ "${(%):-%N}" == "$0" ]]; then
+    dwk "$@"
+fi
