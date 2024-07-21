@@ -39,6 +39,8 @@ dbs() {
 
     local name="$1"
     if [[ $name = "admin" ]]; then
+        export DATABRICKS_HOST=${DATABRICKS_HOST}
+        export DATABRICKS_TOKEN=${DATABRICKS_TOKEN}
         export MLFLOW_TRACKING_URI=databricks
         echo "export DATABRICKS_HOST=${DATABRICKS_HOST}"
         echo "export DATABRICKS_TOKEN=${DATABRICKS_TOKEN}"
@@ -46,6 +48,8 @@ dbs() {
     fi
 
     if [[ $name = "user" ]]; then
+        export DATABRICKS_HOST=${DATABRICKS_HOST}
+        export DATABRICKS_TOKEN=${DATABRICKS_USER_TOKEN}
         export MLFLOW_TRACKING_URI=databricks
         echo "export DATABRICKS_HOST=${DATABRICKS_HOST}"
         echo "export DATABRICKS_TOKEN=${DATABRICKS_USER_TOKEN}"
