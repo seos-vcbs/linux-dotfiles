@@ -38,10 +38,17 @@ dbs() {
     source ~/.extra
 
     local name="$1"
-    if [[ $name = "remote" ]]; then
+    if [[ $name = "admin" ]]; then
         export MLFLOW_TRACKING_URI=databricks
         echo "export DATABRICKS_HOST=${DATABRICKS_HOST}"
         echo "export DATABRICKS_TOKEN=${DATABRICKS_TOKEN}"
+        echo "export MLFLOW_TRACKING_URI=databricks"
+    fi
+
+    if [[ $name = "user" ]]; then
+        export MLFLOW_TRACKING_URI=databricks
+        echo "export DATABRICKS_HOST=${DATABRICKS_HOST}"
+        echo "export DATABRICKS_TOKEN=${DATABRICKS_USER_TOKEN}"
         echo "export MLFLOW_TRACKING_URI=databricks"
     fi
 
