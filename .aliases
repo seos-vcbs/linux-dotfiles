@@ -12,7 +12,6 @@ alias z='lazygit'
 
 # poetry related
 if [ "$(uname)" = "Darwin" ]; then export SEP=" "; else export SEP=""; fi
-alias pc='rm -rf .venv dist tmp && (rm -rf ../.prepare_${PWD##*/} || true)'
 alias pe='poetry env use $(cat .python-version)'
 alias pi='pe && poetry lock --no-update && poetry install --sync'
 alias pb='pe && poetry build-project --with-top-namespace ${PWD##*/}'

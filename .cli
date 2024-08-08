@@ -1,10 +1,16 @@
 #!/bin/zsh
 
 # Define the main function
-dwk() {
+dev() {
+    # not ideal but this script is sourced in .zshrc therefore, we don't want 
+    # unnecessary message showing help for this CLI
     if [[ $# -eq 0 ]]; then
+        return 0
+    fi
+
+    if [ $# -eq 1 ] && [ ${1} = "--help" ]; then
         display_help
-        return 1
+        return 0
     fi
 
     local subcommand="$1"
@@ -14,8 +20,8 @@ dwk() {
         dbs)
             dbs "$@"
             ;;
-        sum)
-            sum "$@"
+        poetry)
+            poetry "$@"
             ;;
         info)
             info "$@"
@@ -66,13 +72,35 @@ dbs() {
     fi
 }
 
-# Subcommand: sum
-sum() {
-    local total=0
-    for num in "$@"; do
-        (( total += num ))
-    done
-    echo "Sum: $total"
+# Subcommand: poetry
+poetry() {
+    if [ $# -eq 1 ] && [ ${1} = "--help" ]; then
+        display_poetry_help
+        return 0
+    fi
+
+    local subcommand="$1"
+    shift 1
+
+    case "$subcommand" in
+        clean)
+            poetry_clean "$@"
+            ;;
+        help)
+            display_poetry_help
+            ;;
+        *)
+            echo "Unknown subcommand: $subcommand"
+            display_poetry_help
+            return 1
+            ;;
+    esac
+
+}
+
+poetry_clean() {
+    echo "deleting .venv dist tmp ../.prepare_${PWD##*/}"
+    rm -rf .venv dist tmp && (rm -rf ../.prepare_${PWD##*/} || true)
 }
 
 # Subcommand: info
@@ -84,7 +112,7 @@ info() {
 
 # Help function
 display_help() {
-    echo "Usage: dwk <subcommand> [args]"
+    echo "Usage: dev <subcommand> [args]"
     echo
     echo "Subcommands:"
     echo "  dbs <subcommand>        Databricks automation"
@@ -95,5 +123,5 @@ display_help() {
 
 # Enable the function to be run as a script
 if [[ "${(%):-%N}" == "$0" ]]; then
-    dwk "$@"
+    dev "$@"
 fi
